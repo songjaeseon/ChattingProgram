@@ -34,14 +34,28 @@ public class StringUtil {
 		consoleLog(serverConsole);
 	}
 
+	/**
+	 * 매개변수 값을 console창에 출력한다.
+	 * @param log
+	 */
 	public static void consoleLog(String log) {
 		System.out.println(log);
 	}
 
+	/**
+	 * 매개변수 값을 console창에 출력한다.
+	 * @param strings
+	 */
 	public static void consoleLog(String... strings) {
 		consoleLog(attachString(strings));
 	}
 
+	/**
+	 * 같은 문자열인지 비교한다.
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
 	public static boolean equals(String m1, String m2) {
 		if (m1 == null || m2 == null) {
 			return false;
@@ -52,6 +66,12 @@ public class StringUtil {
 		}
 	}
 
+	/**
+	 * 소문자, 대문자를 무시하고 같은 문자열인지 비교한다.
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
 	public static boolean equalsIgnoreCase(String m1, String m2) {
 		if (m1 == null || m2 == null) {
 			return false;

@@ -51,7 +51,7 @@ public class ChatServerProcessThread extends Thread {
 
 			// nickname check후에 채팅을 쓸 수 있다.
 			nickname = checkNick(socket, map);
-
+			
 			// nickname의 중복여부를 확인 후에 입장문구를 다른 client에게 알린다.
 			doMessage(nickname, "님이 채팅방에 입장했습니다.");
 
@@ -127,25 +127,6 @@ public class ChatServerProcessThread extends Thread {
 
 	}
 
-
-	/**
-	 * 모든 client에 퇴장문구를 띄운다.
-	 * 
-	 * @param writer
-	 */
-	private void doQuit(PrintWriter writer) {
-		removeWriter(writer);
-		map.remove(nickname);
-
-		if (nickname == null) {
-			// nickname 입력 과정중에 강제종료한 경우 문구를 띄우지 않고 종료
-		} else {
-			String data = StringUtil.attachString(nickname, "님이 퇴장했습니다.");
-			StringUtil.serverconsoleLog(data);
-			doMessage(data);
-		}
-	}
-
 	/**
 	 * writer를 삭제한다.
 	 * 
@@ -180,23 +161,23 @@ public class ChatServerProcessThread extends Thread {
 	}
 
 	/**
-	 * 모든 client에게 메시지를 보낸다.
+	 * 모든 client에 퇴장문구를 띄운다.
 	 * 
-	 * @param request
+	 * @param writer
 	 */
-	private void broadcast(String request) {
-		synchronized (listWriters) {
-			PrintWriter writer = null;
+	private void doQuit(PrintWriter writer) {
+		removeWriter(writer);
+		map.remove(nickname);
 
-			for (int i = 0; i < listWriters.size(); i++) {
-				writer = listWriters.get(i);
-				writer.println(request);
-				writer.flush();
-
-			}
+		if (nickname == null) {
+			// nickname 입력 과정중에 강제종료한 경우 문구를 띄우지 않고 종료
+		} else {
+			String data = StringUtil.attachString(nickname, "님이 퇴장했습니다.");
+			StringUtil.serverconsoleLog(data);
+			doMessage(data);
 		}
 	}
-
+	
 	/**
 	 * 현재 인원수를 조회한다.
 	 * 
@@ -224,6 +205,24 @@ public class ChatServerProcessThread extends Thread {
 	private void unicast(String request, PrintWriter writer) {
 		writer.println(request);
 		writer.flush();
+	}
+	
+	/**
+	 * 모든 client에게 메시지를 보낸다.
+	 * 
+	 * @param request
+	 */
+	private void broadcast(String request) {
+		synchronized (listWriters) {
+			PrintWriter writer = null;
+
+			for (int i = 0; i < listWriters.size(); i++) {
+				writer = listWriters.get(i);
+				writer.println(request);
+				writer.flush();
+
+			}
+		}
 	}
 
 }

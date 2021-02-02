@@ -46,7 +46,7 @@ public class ChatClientApp {
 			}
 			
 			// 채팅방에 입장하게 되면 show함수를 실행하여 입력을 할 수 있도록 한다.
-			new ChatWindow(socket).readyChat();
+			new ChatWindow(socket).startChat();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
