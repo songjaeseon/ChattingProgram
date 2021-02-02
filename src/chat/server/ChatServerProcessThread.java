@@ -16,10 +16,8 @@ import chat.utils.StringUtil;
 public class ChatServerProcessThread extends Thread {
 	private Socket socket = null;
 	private String nickname = null;
-	List<PrintWriter> listWriters = null;
-	HashMap<String, PrintWriter> map = null;
-	Map<String, PrintWriter> wisperMode = new HashMap<String, PrintWriter>();
-	StringBuilder sb = null;
+	private List<PrintWriter> listWriters = null;
+	private HashMap<String, PrintWriter> map = null;
 
 	/**
 	 * 
@@ -39,19 +37,15 @@ public class ChatServerProcessThread extends Thread {
 	@Override
 	public void run() {
 		PrintWriter writer = null;
-		try {
-
-			// InputStream - 클라이언트에서 보낸 메세지 읽기위해 쓰인다.
-			InputStream input = socket.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-
-			// OutputStream - 서버에서 클라이언트로 메세지 보내기위해 쓰인다.
+		try ( InputStream input = socket.getInputStream();
+     		  BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+			 ) {
 			OutputStream out = socket.getOutputStream();
 			writer = new PrintWriter(out, true);
-
+			 
 			// nickname check후에 채팅을 쓸 수 있다.
 			nickname = checkNick(socket, map);
-			
+
 			// nickname의 중복여부를 확인 후에 입장문구를 다른 client에게 알린다.
 			doMessage(nickname, "님이 채팅방에 입장했습니다.");
 
@@ -177,7 +171,7 @@ public class ChatServerProcessThread extends Thread {
 			doMessage(data);
 		}
 	}
-	
+
 	/**
 	 * 현재 인원수를 조회한다.
 	 * 
@@ -206,7 +200,7 @@ public class ChatServerProcessThread extends Thread {
 		writer.println(request);
 		writer.flush();
 	}
-	
+
 	/**
 	 * 모든 client에게 메시지를 보낸다.
 	 * 

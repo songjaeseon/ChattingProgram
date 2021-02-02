@@ -16,7 +16,7 @@ public class ChatWindow {
 
 	private Socket socket;
 	private String nickname;
-	Scanner scanner = new Scanner(System.in);
+	private Scanner scanner = new Scanner(System.in);
 
 	public ChatWindow(Socket socket) {
 		this.socket = socket;

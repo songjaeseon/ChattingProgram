@@ -9,8 +9,8 @@ import java.net.SocketException;
 import chat.utils.StringUtil;
 
 public class ChatClientReceiveThread extends Thread {
-	Socket socket = null;
-	String sendNickname = null;
+	private Socket socket = null;
+	private String sendNickname = null;
 
 	ChatClientReceiveThread(Socket socket, String nickname) {
 		this.socket = socket;
